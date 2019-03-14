@@ -1,0 +1,4 @@
+﻿Code  Name             -Ignore
+
+ABC   ABC Enterprises  1
+XYZ   XYZ Widgets      2

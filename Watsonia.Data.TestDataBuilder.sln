@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watsonia.Data.TestDataBuilder", "Watsonia.Data.TestDataBuilder\Watsonia.Data.TestDataBuilder.csproj", "{5DD0EEF9-8DD4-438B-842A-BE0436125EE1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watsonia.Data.TestDataBuilder.Tests", "Watsonia.Data.TestDataBuilder.Tests\Watsonia.Data.TestDataBuilder.Tests.csproj", "{B911A4EE-04D3-44EF-83AB-E6F98A6103ED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watsonia.Data", "..\Watsonia.Data\Watsonia.Data\Watsonia.Data.csproj", "{60C71FDC-771B-4AD0-AF4D-A9814B7EA18B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watsonia.QueryBuilder", "..\Watsonia.QueryBuilder\Watsonia.QueryBuilder\Watsonia.QueryBuilder.csproj", "{55726AA4-63E8-4F8C-A47B-B4D37AA7A8E5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{05ABEC9C-4D94-4EF5-85D3-22C126189485}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watsonia.Data.SQLite", "..\Watsonia.Data\Watsonia.Data.SQLite\Watsonia.Data.SQLite.csproj", "{5583A6EC-CAB7-4298-BE01-6791680E9A86}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5DD0EEF9-8DD4-438B-842A-BE0436125EE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DD0EEF9-8DD4-438B-842A-BE0436125EE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DD0EEF9-8DD4-438B-842A-BE0436125EE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DD0EEF9-8DD4-438B-842A-BE0436125EE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B911A4EE-04D3-44EF-83AB-E6F98A6103ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B911A4EE-04D3-44EF-83AB-E6F98A6103ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B911A4EE-04D3-44EF-83AB-E6F98A6103ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B911A4EE-04D3-44EF-83AB-E6F98A6103ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60C71FDC-771B-4AD0-AF4D-A9814B7EA18B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60C71FDC-771B-4AD0-AF4D-A9814B7EA18B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60C71FDC-771B-4AD0-AF4D-A9814B7EA18B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60C71FDC-771B-4AD0-AF4D-A9814B7EA18B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55726AA4-63E8-4F8C-A47B-B4D37AA7A8E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55726AA4-63E8-4F8C-A47B-B4D37AA7A8E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55726AA4-63E8-4F8C-A47B-B4D37AA7A8E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55726AA4-63E8-4F8C-A47B-B4D37AA7A8E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5583A6EC-CAB7-4298-BE01-6791680E9A86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5583A6EC-CAB7-4298-BE01-6791680E9A86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5583A6EC-CAB7-4298-BE01-6791680E9A86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5583A6EC-CAB7-4298-BE01-6791680E9A86}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {727CA82D-8DEA-478B-A8A8-E8F9F0087CAA}
+	EndGlobalSection
+EndGlobal
