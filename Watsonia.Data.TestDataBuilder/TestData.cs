@@ -106,7 +106,7 @@ namespace Watsonia.Data.TestDataBuilder
 					{
 						typeName = part.Split('.')[0].TrimStart('-');
 					}
-					else if (part.EndsWith("ID", StringComparison.InvariantCultureIgnoreCase))
+					else if (part.EndsWith("ID") || part.EndsWith("Id"))
 					{
 						var fieldName = _configuration.GetFieldName(file.EntityName, part);
 						typeName = _configuration.GetEntityNameForField(file.EntityName, fieldName);
@@ -214,10 +214,11 @@ namespace Watsonia.Data.TestDataBuilder
 						SetEntityValue(entityType, entity, entityPropName, otherPropName, value);
 					}
 					// TODO: Need configuration options:
-					else if (propName.EndsWith("ID"))
+					else if (propName.EndsWith("ID") || propName.EndsWith("Id"))
 					{
-						var entityPropName = propName.Substring(0, propName.Length - 2);
-						var otherPropName = propName.Substring(propName.Length - 2);
+						var fieldName = _configuration.GetFieldName(dataFile.EntityName, propName);
+						var entityPropName = fieldName.Substring(0, fieldName.Length - 2);
+						var otherPropName = fieldName.Substring(fieldName.Length - 2);
 						SetEntityValue(entityType, entity, entityPropName, otherPropName, value);
 					}
 					else
