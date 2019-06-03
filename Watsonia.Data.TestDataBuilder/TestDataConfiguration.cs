@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Watsonia.Data.TestDataBuilder
 {
@@ -67,11 +68,29 @@ namespace Watsonia.Data.TestDataBuilder
 		}
 
 		/// <summary>
+		/// Called before the data import process has started.
+		/// </summary>
+		/// <param name="db">The database.</param>
+		public virtual Task OnBeforeImportAsync(Database  db)
+		{
+			return Task.FromResult(0);
+		}
+
+		/// <summary>
 		/// Called when the database has been created.
 		/// </summary>
 		/// <param name="db">The database.</param>
 		public virtual void OnDatabaseCreated(Database db)
 		{
+		}
+
+		/// <summary>
+		/// Called when the database has been created.
+		/// </summary>
+		/// <param name="db">The database.</param>
+		public virtual Task OnDatabaseCreatedAsync(Database db)
+		{
+			return Task.FromResult(0);
 		}
 
 		/// <summary>
@@ -86,6 +105,18 @@ namespace Watsonia.Data.TestDataBuilder
 		}
 
 		/// <summary>
+		/// Called when an entity has been created (but not saved to the database).
+		/// </summary>
+		/// <param name="db">The database.</param>
+		/// <param name="entityName">Name of the entity.</param>
+		/// <param name="entity">The entity.</param>
+		/// <param name="line">The line.</param>
+		public virtual Task OnEntityAddedAsync(Database db, string entityName, object entity, TestDataFileLine line)
+		{
+			return Task.FromResult(0);
+		}
+
+		/// <summary>
 		/// Called when a set of entities has been saved to the database.
 		/// </summary>
 		/// <param name="db">The database.</param>
@@ -97,11 +128,32 @@ namespace Watsonia.Data.TestDataBuilder
 		}
 
 		/// <summary>
+		/// Called when a set of entities has been saved to the database.
+		/// </summary>
+		/// <param name="db">The database.</param>
+		/// <param name="entityName">Name of the entity.</param>
+		/// <param name="entities">The entities.</param>
+		/// <param name="file">The file.</param>
+		public virtual Task OnEntitiesSavedAsync(Database db, string entityName, List<object> entities, TestDataFile file)
+		{
+			return Task.FromResult(0);
+		}
+
+		/// <summary>
 		/// Called after the data import process has finished.
 		/// </summary>
 		/// <param name="db">The database.</param>
 		public virtual void OnAfterImport(Database db)
 		{
+		}
+
+		/// <summary>
+		/// Called after the data import process has finished.
+		/// </summary>
+		/// <param name="db">The database.</param>
+		public virtual Task OnAfterImportAsync(Database db)
+		{
+			return Task.FromResult(0);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using System.Threading.Tasks;
 using Watsonia.Data.SQLite;
 using Watsonia.Data.TestDataBuilder.Tests.Entities;
 
@@ -9,12 +10,12 @@ namespace Watsonia.Data.TestDataBuilder.Tests
 	public class CreateData
 	{
 		[TestMethod]
-		public void TestCreateData()
+		public async Task TestCreateData()
 		{
 			var provider = new SQLiteDataAccessProvider();
 			var connectionString = @"Data Source=Data\DB\Entities.sqlite";
 			var db = new EntitiesDb(provider, connectionString, "Watsonia.Data.TestDataBuilder.Tests.Entities");
-			TestData.Import(db);
+			await TestData.Import(db);
 
 			// Make sure everything's been created
 			Assert.AreEqual(2, db.Query<Organisation>().Count());

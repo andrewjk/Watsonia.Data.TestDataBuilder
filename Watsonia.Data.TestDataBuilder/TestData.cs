@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Watsonia.Data.TestDataBuilder
 {
@@ -34,7 +35,7 @@ namespace Watsonia.Data.TestDataBuilder
 			}
 		}
 
-		private static readonly object _lock = new object();
+		private static readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 		private static bool _haveCreated = false;
 		private static bool _haveErrored = false;
 		private static string _errorMessage = "";
@@ -44,9 +45,10 @@ namespace Watsonia.Data.TestDataBuilder
 		/// </summary>
 		/// <param name="db">The database context.</param>
 		/// <param name="dataFolder">The data folder.</param>
-		public static void Import(Database db, TestDataConfiguration configuration = null)
+		public static async Task Import(Database db, TestDataConfiguration configuration = null)
 		{
-			lock (_lock)
+			await _semaphore.WaitAsync();
+			try
 			{
 				if (_haveCreated)
 				{
@@ -65,12 +67,14 @@ namespace Watsonia.Data.TestDataBuilder
 
 						var creator = new TestData(db, config);
 
+						await config.OnBeforeImportAsync(db);
 						config.OnBeforeImport(db);
 
 						creator.LoadDataFiles();
-						creator.CreateDatabase();
-						creator.CreateData();
+						await creator.CreateDatabaseAsync();
+						await creator.CreateDataAsync();
 
+						await config.OnAfterImportAsync(db);
 						config.OnAfterImport(db);
 					}
 					catch (Exception ex)
@@ -80,6 +84,10 @@ namespace Watsonia.Data.TestDataBuilder
 						throw;
 					}
 				}
+			}
+			finally
+			{
+				_semaphore.Release();
 			}
 		}
 
@@ -131,10 +139,10 @@ namespace Watsonia.Data.TestDataBuilder
 			_dataFiles.AddRange(TopologicalSort(dataFiles, f => f.Dependencies));
 		}
 
-		private void CreateDatabase()
+		private async Task CreateDatabaseAsync()
 		{
-			_db.EnsureDatabaseDeleted();
-			_db.EnsureDatabaseCreated();
+			await _db.EnsureDatabaseDeletedAsync();
+			await _db.EnsureDatabaseCreatedAsync();
 
 			// NOTE: This could potentially be an option:
 			//var tables = new List<string>();
@@ -148,14 +156,15 @@ namespace Watsonia.Data.TestDataBuilder
 			//	_db.Database.ExecuteSqlCommand(delete);
 			//}
 
+			await _configuration.OnDatabaseCreatedAsync(_db);
 			_configuration.OnDatabaseCreated(_db);
 		}
 
-		private void CreateData()
+		private async Task CreateDataAsync()
 		{
 			foreach (var dataFile in _dataFiles)
 			{
-				ImportData(dataFile);
+				await ImportDataAsync(dataFile);
 			}
 		}
 
@@ -179,7 +188,7 @@ namespace Watsonia.Data.TestDataBuilder
 			}
 		}
 
-		private void ImportData(TestDataFile dataFile)
+		private async Task ImportDataAsync(TestDataFile dataFile)
 		{
 			var entityType = GetEntityType(dataFile.EntityName);
 			var entities = new List<object>();
@@ -234,19 +243,20 @@ namespace Watsonia.Data.TestDataBuilder
 				// That means we can refer to things by their IDs in the data files
 				try
 				{
-					_db.Save(entity);
+					await _db.SaveAsync(entity);
 				}
 				catch (Exception ex)
 				{
 					throw new Exception($"Error adding {entityType}", ex);
 				}
 
+				await _configuration.OnEntityAddedAsync(_db, dataFile.EntityName, entity, line);
 				_configuration.OnEntityAdded(_db, dataFile.EntityName, entity, line);
 
 				// Save changes again, just in case the user did something in _configuration.OnEntityAdded, above
 				try
 				{
-					_db.Save(entity);
+					await _db.SaveAsync(entity);
 				}
 				catch (Exception ex)
 				{
@@ -254,6 +264,7 @@ namespace Watsonia.Data.TestDataBuilder
 				}
 			}
 
+			await _configuration.OnEntitiesSavedAsync(_db, dataFile.EntityName, entities, dataFile);
 			_configuration.OnEntitiesSaved(_db, dataFile.EntityName, entities, dataFile);
 		}
 
@@ -262,7 +273,17 @@ namespace Watsonia.Data.TestDataBuilder
 			var typeName = _db.Configuration.EntityNamespace + "." + name;
 			foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 			{
-				var type = assembly.GetTypes().FirstOrDefault(t => t.FullName == typeName);
+				Type[] types;
+				try
+				{
+					types = assembly.GetTypes();
+				}
+				catch (ReflectionTypeLoadException ex)
+				{
+					types = ex.Types;
+				}
+
+				var type = types.FirstOrDefault(t => t != null && t.FullName == typeName);
 				if (type != null)
 				{
 					return type;
