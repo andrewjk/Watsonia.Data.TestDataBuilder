@@ -141,8 +141,8 @@ namespace Watsonia.Data.TestDataBuilder
 
 		private async Task CreateDatabaseAsync()
 		{
-			await _db.EnsureDatabaseDeletedAsync();
-			await _db.EnsureDatabaseCreatedAsync();
+			_db.EnsureDatabaseDeleted();
+			_db.EnsureDatabaseCreated();
 
 			// NOTE: This could potentially be an option:
 			//var tables = new List<string>();
